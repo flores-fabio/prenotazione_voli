@@ -1,0 +1,169 @@
+<!-- ✈️ TEMPLATE LE MIE PRENOTAZIONI -->
+
+<div class="container">
+  <!-- Intestazione con logout -->
+  <div class="header-prenotazioni">
+    <div>
+      <h1>✈️ Le Mie Prenotazioni</h1>
+      <p>Benvenuto, <strong>{{ utente?.nome }} {{ utente?.cognome }}</strong></p>
+    </div>
+    <button (click)="logout()" class="btn btn-logout">
+      🚪 Logout
+    </button>
+  </div>
+
+  <!-- Spinner di caricamento -->
+  <div *ngIf="caricamento" class="spinner">
+    <p>Caricamento prenotazioni...</p>
+  </div>
+
+  <!-- Messaggio di errore -->
+  <div *ngIf="errore" class="alert alert-danger">
+    ⚠️ {{ errore }}
+  </div>
+
+  <!-- Lista prenotazioni -->
+  <div *ngIf="!caricamento && prenotazioni.length > 0" class="lista-prenotazioni">
+    <h2>{{ prenotazioni.length }} Prenotazione(i)</h2>
+
+    <!-- Singola prenotazione -->
+    <div *ngFor="let prenotazione of prenotazioni" class="prenotazione-card">
+      <div class="prenotazione-header">
+        <div class="numero-prenotazione">
+          <strong>{{ prenotazione.numero_prenotazione }}</strong>
+          <span class="data">{{ formattaData(prenotazione.data_prenotazione) }}</span>
+        </div>
+        <div class="stato">
+          <span class="badge" [class.badge-success]="prenotazione.stato === 'Confermata'">
+            {{ prenotazione.stato }}
+          </span>
+        </div>
+      </div>
+
+      <div class="prenotazione-info">
+        <div class="info-item">
+          <strong>Volo:</strong>
+          {{ prenotazione.numero_volo }}
+        </div>
+        <div class="info-item">
+          <strong>Rotta:</strong>
+          {{ prenotazione.aeroporto_partenza }} → {{ prenotazione.aeroporto_arrivo }}
+        </div>
+        <div class="info-item">
+          <strong>Data:</strong>
+          {{ formattaData(prenotazione.data_partenza) }}
+        </div>
+        <div class="info-item">
+          <strong>Passeggeri:</strong>
+          {{ prenotazione.numero_passeggeri }}
+        </div>
+        <div class="info-item">
+          <strong>Totale:</strong>
+          <span class="prezzo">€ {{ prenotazione.prezzo_totale }}</span>
+        </div>
+      </div>
+
+      <div class="prenotazione-azioni">
+        <button
+          (click)="visualizzaDettagli(prenotazione.id_prenotazione)"
+          class="btn btn-small btn-dettagli"
+        >
+          📋 Dettagli
+        </button>
+        <button
+          (click)="annullaPrenotazione(prenotazione.id_prenotazione)"
+          class="btn btn-small btn-annulla"
+        >
+          ❌ Annulla
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nessuna prenotazione -->
+  <div *ngIf="!caricamento && prenotazioni.length === 0" class="alert alert-info">
+    Non hai ancora effettuato nessuna prenotazione. <a href="/">Cerca voli</a>
+  </div>
+
+  <!-- ================================
+       POPUP DETTAGLI PRENOTAZIONE
+       ================================ -->
+
+  <div *ngIf="prenotazione_selezionata" class="modal-overlay" (click)="chiudiDettagli()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <!-- $event.stopPropagation() evita che il click si propaghi al background -->
+
+      <button (click)="chiudiDettagli()" class="btn-chiudi">✕</button>
+
+      <h2>📋 Dettagli Prenotazione</h2>
+
+      <div class="dettagli-popup">
+        <div class="dettaglio-item">
+          <strong>Numero prenotazione:</strong>
+          <p>{{ prenotazione_selezionata.numero_prenotazione }}</p>
+        </div>
+
+        <div class="dettaglio-item">
+          <strong>Passeggero:</strong>
+          <p>{{ prenotazione_selezionata.nome }} {{ prenotazione_selezionata.cognome }}</p>
+        </div>
+
+        <div class="dettaglio-item">
+          <strong>Email:</strong>
+          <p>{{ prenotazione_selezionata.email }}</p>
+        </div>
+
+        <div class="dettaglio-item">
+          <strong>Volo:</strong>
+          <p>{{ prenotazione_selezionata.numero_volo }}</p>
+        </div>
+
+        <div class="dettaglio-item">
+          <strong>Rotta:</strong>
+          <p>{{ prenotazione_selezionata.aeroporto_partenza }} → {{ prenotazione_selezionata.aeroporto_arrivo }}</p>
+        </div>
+
+        <div class="dettaglio-item">
+          <strong>Data partenza:</strong>
+          <p>{{ formattaData(prenotazione_selezionata.data_partenza) }}</p>
+        </div>
+
+        <div class="dettaglio-item">
+          <strong>Data arrivo:</strong>
+          <p>{{ formattaData(prenotazione_selezionata.data_arrivo) }}</p>
+        </div>
+
+        <div class="dettaglio-item">
+          <strong>Numero passeggeri:</strong>
+          <p>{{ prenotazione_selezionata.numero_passeggeri }}</p>
+        </div>
+
+        <div class="dettaglio-item">
+          <strong>Prezzo totale:</strong>
+          <p class="prezzo-grande">€ {{ prenotazione_selezionata.prezzo_totale }}</p>
+        </div>
+
+        <!-- Biglietti -->
+        <div class="biglietti-section">
+          <h3>🎫 Biglietti</h3>
+          <div *ngFor="let biglietto of prenotazione_selezionata.biglietti" class="biglietto-item">
+            <div>
+              <strong>{{ biglietto.numero_biglietto }}</strong>
+              <p>{{ biglietto.nome_passeggero }} {{ biglietto.cognome_passeggero }}</p>
+              <p>Posto: {{ biglietto.numero_posto }}</p>
+            </div>
+            <span class="badge" [class.badge-success]="biglietto.stato === 'Attivo'">
+              {{ biglietto.stato }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-azioni">
+        <button (click)="chiudiDettagli()" class="btn btn-primary">
+          Chiudi
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

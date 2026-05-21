@@ -1,0 +1,63 @@
+<!-- ✈️ TEMPLATE LOGIN -->
+
+<div class="container-login">
+  <div class="login-box">
+    <h1>✈️ Prenotazione Voli</h1>
+    <h2>Accedi al tuo account</h2>
+
+    <!-- Messaggio di errore -->
+    <div *ngIf="errore" class="alert alert-danger">
+      ⚠️ {{ errore }}
+    </div>
+
+    <!-- Form di login -->
+    <form (submit)="effettuaLogin()" class="form-login">
+      <!-- Campo Email -->
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="nome@example.com"
+          required
+        >
+      </div>
+
+      <!-- Campo Password -->
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="La tua password"
+          required
+        >
+      </div>
+
+      <!-- Bottone Login -->
+      <button type="submit" class="btn btn-login" [disabled]="caricamento">
+        <span *ngIf="!caricamento">Accedi</span>
+        <span *ngIf="caricamento">⏳ Accesso in corso...</span>
+      </button>
+    </form>
+
+    <!-- Separatore -->
+    <div class="separatore">oppure</div>
+
+    <!-- Bottone Registrazione -->
+    <button (click)="vaiARegistrazione()" class="btn btn-registrazione">
+      Registrati
+    </button>
+
+    <!-- Link demo per test -->
+    <div class="demo-info">
+      <p><strong>Demo Login:</strong></p>
+      <p>Email: test@example.com</p>
+      <p>Password: password</p>
+    </div>
+  </div>
+</div>

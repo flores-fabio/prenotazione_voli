@@ -1,0 +1,379 @@
+/* ✈️ CSS LE MIE PRENOTAZIONI */
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.header-prenotazioni {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.header-prenotazioni h1 {
+  color: #667eea;
+  margin: 0;
+  font-size: 32px;
+}
+
+.header-prenotazioni p {
+  color: #666;
+  margin: 5px 0 0 0;
+  font-size: 14px;
+}
+
+.btn-logout {
+  background: #f5222d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(245, 34, 45, 0.3);
+}
+
+.spinner {
+  text-align: center;
+  padding: 40px;
+  color: white;
+}
+
+.spinner p {
+  font-size: 18px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.alert {
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.alert-danger {
+  background: #f8d7da;
+  border-left: 4px solid #f5222d;
+  color: #721c24;
+}
+
+.alert-info {
+  background: #d1ecf1;
+  border-left: 4px solid #17a2b8;
+  color: #0c5460;
+}
+
+.alert-info a {
+  color: #0c5460;
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px solid;
+}
+
+/* ================================
+   LISTA PRENOTAZIONI
+   ================================ */
+
+.lista-prenotazioni {
+  margin-top: 20px;
+}
+
+.lista-prenotazioni > h2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.prenotazione-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.prenotazione-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.prenotazione-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.numero-prenotazione strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.numero-prenotazione .data {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.badge-success {
+  background: #28a745;
+  color: white;
+}
+
+.prenotazione-info {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item strong {
+  color: #667eea;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.info-item {
+  color: #333;
+  font-size: 14px;
+}
+
+.prezzo {
+  color: #667eea;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.prenotazione-azioni {
+  padding: 15px 20px;
+  background: #f9f9f9;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-small {
+  font-size: 12px;
+  flex: 1;
+}
+
+.btn-dettagli {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-dettagli:hover {
+  background: #138496;
+}
+
+.btn-annulla {
+  background: #f5222d;
+  color: white;
+}
+
+.btn-annulla:hover {
+  background: #d32f2f;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  width: 100%;
+  padding: 12px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* ================================
+   MODAL
+   ================================ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.btn-chiudi {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #f0f0f0;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-chiudi:hover {
+  background: #e0e0e0;
+  transform: rotate(90deg);
+}
+
+.modal-content h2 {
+  color: #333;
+  margin-top: 0;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #eee;
+}
+
+.dettagli-popup {
+  margin: 20px 0;
+}
+
+.dettaglio-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.dettaglio-item strong {
+  color: #667eea;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.dettaglio-item p {
+  margin: 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.prezzo-grande {
+  font-size: 20px !important;
+  color: #667eea;
+  font-weight: bold !important;
+}
+
+.biglietti-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #eee;
+}
+
+.biglietti-section h3 {
+  color: #333;
+  margin-top: 0;
+}
+
+.biglietto-item {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.biglietto-item strong {
+  display: block;
+  color: #667eea;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.biglietto-item p {
+  margin: 3px 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.modal-azioni {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media (max-width: 768px) {
+  .header-prenotazioni {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .prenotazione-info {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+}

@@ -1,0 +1,243 @@
+<!-- ✈️ TEMPLATE HTML - LISTA VOLI -->
+<!-- Questo è il layout visuale della pagina con la lista dei voli -->
+
+<div class="container">
+  <!-- Container: contenitore principale per il contenuto -->
+
+  <h1>✈️ Prenotazione Voli</h1>
+  <!-- Titolo principale della pagina -->
+
+  <!-- ================================
+       SEZIONE FILTRI DI RICERCA
+       ================================ -->
+
+  <div class="filtri-box">
+    <!-- Box con tutti i filtri di ricerca -->
+
+    <h2>Cerca Voli</h2>
+    <!-- Sottotitolo -->
+
+    <div class="filtri-grid">
+      <!-- Grid: layout a griglia per disporre i filtri -->
+
+      <!-- FILTRO 1: AEROPORTO PARTENZA -->
+      <div class="filtro-campo">
+        <label for="partenza">Partenza da:</label>
+        <!-- <label for="partenza"> indica che questo label è associato all'input con id="partenza" -->
+
+        <select id="partenza" [(ngModel)]="aeroporto_partenza">
+          <!-- [(ngModel)]="aeroporto_partenza" = two-way binding -->
+          <!-- Quando l'utente seleziona, il valore viene salvato automaticamente in aeroporto_partenza -->
+
+          <option value="">-- Seleziona partenza --</option>
+          <!-- Opzione vuota come placeholder -->
+
+          <!-- *ngFor: cicla su tutti gli aeroporti -->
+          <option *ngFor="let aeroporto of aeroporti" [value]="aeroporto.codice_iata">
+            <!-- [value]="aeroporto.codice_iata" = bind il valore dell'opzione -->
+            <!-- let aeroporto: variabile locale per ogni iterazione del ciclo -->
+
+            {{ aeroporto.codice_iata }} - {{ aeroporto.nome }}
+            <!-- {{ }} = interpolazione: mostra i dati dinamicamente -->
+          </option>
+        </select>
+      </div>
+
+      <!-- FILTRO 2: AEROPORTO ARRIVO -->
+      <div class="filtro-campo">
+        <label for="arrivo">Arrivo a:</label>
+
+        <select id="arrivo" [(ngModel)]="aeroporto_arrivo">
+          <option value="">-- Seleziona arrivo --</option>
+
+          <option *ngFor="let aeroporto of aeroporti" [value]="aeroporto.codice_iata">
+            {{ aeroporto.codice_iata }} - {{ aeroporto.nome }}
+          </option>
+        </select>
+      </div>
+
+      <!-- FILTRO 3: DATA INIZIO -->
+      <div class="filtro-campo">
+        <label for="data_inizio">Data partenza da:</label>
+
+        <input
+          type="date"
+          id="data_inizio"
+          [(ngModel)]="data_inizio"
+          class="input-data"
+        >
+        <!-- type="date": input specifico per le date -->
+        <!-- Mostra un date picker calendario -->
+      </div>
+
+      <!-- FILTRO 4: DATA FINE -->
+      <div class="filtro-campo">
+        <label for="data_fine">Data partenza fino a:</label>
+
+        <input
+          type="date"
+          id="data_fine"
+          [(ngModel)]="data_fine"
+          class="input-data"
+        >
+      </div>
+    </div>
+
+    <!-- PULSANTI DI AZIONE -->
+    <div class="bottoni-filtri">
+      <!-- div: contenitore per i bottoni -->
+
+      <button (click)="ricercaVoli()" class="btn btn-primary">
+        <!-- (click)="ricercaVoli()" = event binding -->
+        <!-- Quando clicchi il bottone, viene eseguito ricercaVoli() -->
+
+        🔍 Cerca
+      </button>
+
+      <button (click)="resettaFiltri()" class="btn btn-secondary">
+        <!-- Riporta tutto come all'inizio -->
+
+        ↺ Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- ================================
+       MESSAGGI DI ERRORE
+       ================================ -->
+
+  <!-- *ngIf: mostra questo elemento solo se la condizione è vera -->
+  <div *ngIf="errore" class="alert alert-danger">
+    <!-- class="alert alert-danger": stile CSS per il messaggio di errore -->
+    <!-- [rosso] -->
+
+    ⚠️ {{ errore }}
+    <!-- Mostra il messaggio di errore -->
+  </div>
+
+  <!-- ================================
+       SPINNER DI CARICAMENTO
+       ================================ -->
+
+  <div *ngIf="caricamento" class="spinner">
+    <!-- Mostra lo spinner solo durante il caricamento -->
+
+    <p>Caricamento voli in corso...</p>
+    <!-- Messaggio di attesa -->
+  </div>
+
+  <!-- ================================
+       LISTA VOLI
+       ================================ -->
+
+  <!-- Mostra la lista dei voli solo se non sto caricando -->
+  <div *ngIf="!caricamento && voli_filtrati.length > 0" class="voli-container">
+    <!-- class="voli-container": contenitore per la lista -->
+
+    <h2>{{ voli_filtrati.length }} Voli Disponibili</h2>
+    <!-- Mostra il numero di voli trovati -->
+
+    <!-- *ngFor: cicla su ogni volo nella lista -->
+    <div *ngFor="let volo of voli_filtrati" class="volo-card">
+      <!-- class="volo-card": stile CSS per ogni carta volo -->
+
+      <!-- INTESTAZIONE DELLA CARTA -->
+      <div class="volo-header">
+        <div class="volo-numero">
+          <strong>{{ volo.numero_volo }}</strong>
+          <!-- Numero del volo es: AZ001 -->
+        </div>
+
+        <div class="volo-stato">
+          <span class="badge" [class.badge-success]="volo.stato === 'Programmato'">
+            <!-- [class.badge-success]="": aggiunge la classe CSS se la condizione è vera -->
+            <!-- Colore verde se lo stato è "Programmato" -->
+
+            {{ volo.stato }}
+            <!-- Mostra lo stato del volo -->
+          </span>
+        </div>
+      </div>
+
+      <!-- INFORMAZIONI DEL VOLO -->
+      <div class="volo-info">
+        <!-- Grid con le informazioni principali -->
+
+        <div class="info-item">
+          <strong>Da:</strong>
+          {{ volo.codice_partenza }} - {{ volo.aeroporto_partenza }}
+          <!-- Città e codice IATA della partenza -->
+        </div>
+
+        <div class="info-item">
+          <strong>A:</strong>
+          {{ volo.codice_arrivo }} - {{ volo.aeroporto_arrivo }}
+          <!-- Città e codice IATA dell'arrivo -->
+        </div>
+
+        <div class="info-item">
+          <strong>Partenza:</strong>
+          {{ formattaData(volo.data_partenza) }}
+          <!-- Data e ora della partenza formattate -->
+        </div>
+
+        <div class="info-item">
+          <strong>Arrivo:</strong>
+          {{ formattaData(volo.data_arrivo) }}
+          <!-- Data e ora dell'arrivo formattate -->
+        </div>
+
+        <div class="info-item">
+          <strong>Durata:</strong>
+          {{ calcolaDurata(volo.data_partenza, volo.data_arrivo) }}
+          <!-- Durata calcolata automaticamente -->
+        </div>
+
+        <div class="info-item">
+          <strong>Compagnia:</strong>
+          {{ volo.compagnia }}
+          <!-- Nome della compagnia aerea -->
+        </div>
+
+        <div class="info-item">
+          <strong>Aereo:</strong>
+          {{ volo.modello_aereo }}
+          <!-- Modello dell'aereo es: Boeing 737 -->
+        </div>
+
+        <div class="info-item">
+          <strong>Posti disponibili:</strong>
+          {{ volo.posti_disponibili }}
+          <!-- Numero di posti ancora disponibili -->
+        </div>
+      </div>
+
+      <!-- PREZZO E BOTTONE -->
+      <div class="volo-footer">
+        <div class="prezzo">
+          <strong>€ {{ volo.prezzo_base }}</strong>
+          <!-- Prezzo per passeggero -->
+          <span class="per-passeggero">per passeggero</span>
+        </div>
+
+        <button
+          (click)="vaiADettaglio(volo.id_volo)"
+          class="btn btn-primary"
+          [disabled]="volo.posti_disponibili === 0"
+        >
+          Prenota Ora →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================
+       MESSAGGIO NESSUN VOLO
+       ================================ -->
+
+  <div *ngIf="!caricamento && voli_filtrati.length === 0" class="alert alert-info">
+    <!-- Mostra se non ci sono voli dopo una ricerca -->
+
+    Nessun volo trovato. Prova a modificare i filtri.
+  </div>
+</div>

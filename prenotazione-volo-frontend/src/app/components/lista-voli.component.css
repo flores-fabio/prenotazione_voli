@@ -1,0 +1,452 @@
+/* ✈️ STILI CSS - LISTA VOLI */
+/* Stili visivi per la pagina di ricerca voli */
+
+/* ================================
+   CONTENITORE PRINCIPALE
+   ================================ */
+
+.container {
+  max-width: 1200px;
+  /* Larghezza massima del contenitore */
+
+  margin: 0 auto;
+  /* Centra il contenuto */
+
+  padding: 20px;
+  /* Spazio interno */
+
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Sfondo con gradiente (da blu a viola) */
+
+  min-height: 100vh;
+  /* Altezza minima della finestra */
+}
+
+h1 {
+  color: white;
+  /* Testo bianco */
+
+  text-align: center;
+  /* Centra il testo */
+
+  font-size: 48px;
+  /* Dimensione grande */
+
+  margin-bottom: 40px;
+  /* Spazio sotto il titolo */
+
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  /* Ombra sotto il testo per renderlo più leggibile */
+}
+
+h2 {
+  color: #333;
+  /* Grigio scuro */
+
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* ================================
+   BOX FILTRI
+   ================================ */
+
+.filtri-box {
+  background: white;
+  /* Sfondo bianco */
+
+  padding: 30px;
+  /* Spazio interno ampio */
+
+  border-radius: 15px;
+  /* Angoli arrotondati */
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  /* Ombra per effetto 3D */
+
+  margin-bottom: 30px;
+  /* Spazio sotto il box */
+}
+
+/* ================================
+   GRIGLIA FILTRI
+   ================================ */
+
+.filtri-grid {
+  display: grid;
+  /* Layout a griglia */
+
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* Crea colonne responsive: minimo 200px, massimo dinamico */
+
+  gap: 20px;
+  /* Spazio tra gli elementi della griglia */
+
+  margin-bottom: 20px;
+}
+
+.filtro-campo {
+  display: flex;
+  flex-direction: column;
+  /* Dispone verticalmente label e input */
+}
+
+.filtro-campo label {
+  font-weight: bold;
+  /* Testo in grassetto */
+
+  margin-bottom: 8px;
+  /* Spazio sotto la label */
+
+  color: #333;
+}
+
+.filtro-campo select,
+.filtro-campo input {
+  padding: 12px;
+  /* Spazio interno */
+
+  border: 2px solid #ddd;
+  /* Bordo grigio leggero */
+
+  border-radius: 8px;
+  /* Angoli arrotondati */
+
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+  /* Animazione liscia per il cambio di colore del bordo */
+}
+
+.filtro-campo select:focus,
+.filtro-campo input:focus {
+  outline: none;
+  /* Tolgo il bordo blu di default */
+
+  border-color: #667eea;
+  /* Cambio il colore del bordo quando focussato */
+}
+
+.input-data {
+  cursor: pointer;
+  /* Cursor a mano quando passo sopra */
+}
+
+/* ================================
+   BOTTONI
+   ================================ */
+
+.bottoni-filtri {
+  display: flex;
+  /* Layout orizzontale */
+
+  gap: 10px;
+  /* Spazio tra i bottoni */
+
+  justify-content: center;
+  /* Centra i bottoni */
+}
+
+.btn {
+  padding: 12px 30px;
+  /* Spazio interno */
+
+  border: none;
+  /* Tolgo il bordo */
+
+  border-radius: 8px;
+  /* Angoli arrotondati */
+
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  /* Cursor a mano */
+
+  transition: all 0.3s ease;
+  /* Animazione liscia */
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Sfondo con gradiente blu-viola */
+
+  color: white;
+  /* Testo bianco */
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  /* Sposta il bottone di 2px verso l'alto al passaggio del mouse */
+
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+  /* Aggiungo un'ombra più grande */
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  /* Grigio se disabilitato */
+
+  cursor: not-allowed;
+  /* Cursor con il divieto */
+
+  opacity: 0.5;
+  /* Semi trasparente */
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  /* Grigio leggero */
+
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #ddd;
+  /* Grigio più scuro al passaggio */
+}
+
+/* ================================
+   MESSAGGI DI ALLERTA
+   ================================ */
+
+.alert {
+  padding: 15px 20px;
+  /* Spazio interno */
+
+  border-radius: 8px;
+  /* Angoli arrotondati */
+
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.alert-danger {
+  background: #f8d7da;
+  /* Rosso chiaro */
+
+  border-left: 4px solid #f5222d;
+  /* Bordo rosso a sinistra */
+
+  color: #721c24;
+  /* Testo rosso scuro */
+}
+
+.alert-info {
+  background: #d1ecf1;
+  /* Blu chiaro */
+
+  border-left: 4px solid #17a2b8;
+  /* Bordo blu */
+
+  color: #0c5460;
+  /* Testo blu scuro */
+}
+
+/* ================================
+   SPINNER DI CARICAMENTO
+   ================================ */
+
+.spinner {
+  text-align: center;
+  padding: 40px;
+  color: white;
+}
+
+.spinner p {
+  font-size: 18px;
+  animation: pulse 1.5s ease-in-out infinite;
+  /* Animazione di pulsazione infinita */
+}
+
+@keyframes pulse {
+  /* Definisco l'animazione pulse */
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* ================================
+   CONTENITORE VOLI
+   ================================ */
+
+.voli-container {
+  margin-top: 40px;
+}
+
+.voli-container > h2 {
+  color: white;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* ================================
+   SINGOLA CARTA VOLO
+   ================================ */
+
+.volo-card {
+  background: white;
+  /* Sfondo bianco */
+
+  border-radius: 12px;
+  /* Angoli arrotondati */
+
+  overflow: hidden;
+  /* Nasconde il contenuto che esce dai bordi */
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  /* Ombra leggera */
+
+  margin-bottom: 20px;
+  /* Spazio tra le carte */
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Animazioni per il passaggio del mouse */
+}
+
+.volo-card:hover {
+  transform: translateY(-5px);
+  /* Sposta la carta verso l'alto */
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  /* Ombra più grande */
+}
+
+/* ================================
+   INTESTAZIONE CARTA
+   ================================ */
+
+.volo-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Sfondo con gradiente */
+
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.volo-numero {
+  font-size: 24px;
+}
+
+.volo-stato {
+  font-size: 14px;
+}
+
+/* Badge per lo stato */
+.badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  /* Forma ovale */
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.badge-success {
+  background: #28a745;
+  /* Verde */
+
+  color: white;
+}
+
+/* ================================
+   INFORMAZIONI VOLO
+   ================================ */
+
+.volo-info {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item strong {
+  color: #667eea;
+  /* Blu */
+
+  font-size: 12px;
+  text-transform: uppercase;
+  /* Maiuscole */
+
+  margin-bottom: 5px;
+}
+
+.info-item {
+  color: #333;
+  font-size: 14px;
+}
+
+/* ================================
+   FOOTER CARTA (PREZZO E BOTTONE)
+   ================================ */
+
+.volo-footer {
+  padding: 20px;
+  background: #f9f9f9;
+  /* Grigio molto leggero */
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eee;
+}
+
+.prezzo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.prezzo strong {
+  font-size: 24px;
+  color: #667eea;
+}
+
+.per-passeggero {
+  font-size: 12px;
+  color: #999;
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
+@media (max-width: 768px) {
+  /* Su schermi piccoli */
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .filtri-grid {
+    grid-template-columns: 1fr;
+    /* Una sola colonna */
+  }
+
+  .bottoni-filtri {
+    flex-direction: column;
+    /* Bottoni uno sotto l'altro */
+  }
+
+  .btn {
+    width: 100%;
+    /* Bottoni a larghezza intera */
+  }
+
+  .volo-footer {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

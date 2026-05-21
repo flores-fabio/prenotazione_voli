@@ -1,0 +1,178 @@
+<!-- ✈️ TEMPLATE DETTAGLIO VOLO -->
+
+<div class="container">
+  <!-- Bottone torna indietro -->
+  <button (click)="tornaIndietro()" class="btn-back">
+    ← Torna alla ricerca
+  </button>
+
+  <!-- Spinner caricamento -->
+  <div *ngIf="caricamento" class="spinner">
+    <p>Caricamento dettagli volo...</p>
+  </div>
+
+  <!-- Messaggio errore -->
+  <div *ngIf="errore" class="alert alert-danger">
+    ⚠️ {{ errore }}
+  </div>
+
+  <!-- Messaggi di successo -->
+  <div *ngIf="successo" class="alert alert-success">
+    ✅ {{ successo }}
+  </div>
+
+  <!-- Contenuto volo (mostrato solo se caricato) -->
+  <div *ngIf="!caricamento && volo" class="volo-dettaglio">
+    <!-- INTESTAZIONE PRINCIPALE -->
+    <div class="header-volo">
+      <div>
+        <h1>{{ volo.numero_volo }}</h1>
+        <p class="compagnia">{{ volo.compagnia }}</p>
+      </div>
+      <div class="stato-badge">
+        <span class="badge badge-success">{{ volo.stato }}</span>
+      </div>
+    </div>
+
+    <!-- INFORMAZIONI PRINCIPALI -->
+    <div class="info-principale">
+      <div class="tappa">
+        <div class="aeroporto-code">{{ volo.codice_partenza }}</div>
+        <div class="aeroporto-nome">{{ volo.aeroporto_partenza }}</div>
+        <div class="data-ora">{{ formattaData(volo.data_partenza) }}</div>
+      </div>
+
+      <div class="connessione">
+        <div class="freccia">→</div>
+        <div class="durata">{{ (volo.data_arrivo | date:'short') }}</div>
+      </div>
+
+      <div class="tappa">
+        <div class="aeroporto-code">{{ volo.codice_arrivo }}</div>
+        <div class="aeroporto-nome">{{ volo.aeroporto_arrivo }}</div>
+        <div class="data-ora">{{ formattaData(volo.data_arrivo) }}</div>
+      </div>
+    </div>
+
+    <!-- DETTAGLI AGGIUNTIVI -->
+    <div class="dettagli-grid">
+      <div class="dettaglio-item">
+        <strong>Aereo:</strong>
+        <p>{{ volo.modello_aereo }}</p>
+      </div>
+
+      <div class="dettaglio-item">
+        <strong>Capienza totale:</strong>
+        <p>{{ volo.capienza_passeggeri }} posti</p>
+      </div>
+
+      <div class="dettaglio-item">
+        <strong>Posti disponibili:</strong>
+        <p style="color: #28a745; font-weight: bold;">{{ volo.posti_disponibili }} posti</p>
+      </div>
+
+      <div class="dettaglio-item">
+        <strong>Prezzo base:</strong>
+        <p style="color: #667eea; font-weight: bold;">€ {{ volo.prezzo_base }}</p>
+      </div>
+    </div>
+
+    <!-- SEZIONE PRENOTAZIONE -->
+    <div class="sezione-prenotazione">
+      <h2>📝 Seleziona i Posti e Prenota</h2>
+
+      <!-- SELEZIONE NUMERO PASSEGGERI -->
+      <div class="numero-passeggeri-box">
+        <label><strong>Numero di passeggeri:</strong></label>
+
+        <div class="counter">
+          <button
+            (click)="aggiornaNumeroPasseggeri(numero_passeggeri - 1)"
+            [disabled]="numero_passeggeri <= 1"
+            class="btn-counter"
+          >
+            −
+          </button>
+
+          <input type="number" [(ngModel)]="numero_passeggeri" min="1" readonly class="numero-input">
+
+          <button
+            (click)="aggiornaNumeroPasseggeri(numero_passeggeri + 1)"
+            [disabled]="numero_passeggeri >= volo.posti_disponibili"
+            class="btn-counter"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <!-- GRIGLIA POSTI -->
+      <div class="griglia-posti">
+        <h3>Scegli i tuoi posti:</h3>
+
+        <!-- Mostra i posti disponibili -->
+        <div class="posti-container">
+          <div
+            *ngFor="let posto of getPostiDisponibili()"
+            (click)="togglePosto(posto.id_posto, posto.numero_posto)"
+            class="posto"
+            [class.selezionato]="isPostoSelezionato(posto.id_posto)"
+            title="Clicca per selezionare/deselezionare"
+          >
+            {{ posto.numero_posto }}
+          </div>
+        </div>
+
+        <!-- Mostra i posti già prenotati come non cliccabili -->
+        <ng-container *ngFor="let posto of volo.posti">
+          <div
+            *ngIf="posto.disponibile === false"
+            class="posto non-disponibile"
+            title="Posto già prenotato"
+          >
+            {{ posto.numero_posto }}
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- RIEPILOGO SELEZIONE -->
+      <div class="riepilogo-selezione">
+        <h3>Posti selezionati:</h3>
+
+        <div *ngIf="posti_selezionati.length > 0">
+          <p>
+            <strong>{{ posti_selezionati.length }}/{{ numero_passeggeri }}</strong> posti selezionati
+          </p>
+
+          <div class="lista-posti">
+            <span *ngFor="let posto of posti_selezionati" class="badge-posto">
+              {{ posto.numero_posto }}
+            </span>
+          </div>
+
+          <div class="calcolo-prezzo">
+            <strong>Prezzo totale:</strong>
+            <p style="font-size: 24px; color: #667eea;">
+              € {{ numero_passeggeri * volo.prezzo_base | number:'1.2-2' }}
+            </p>
+            <small>({{ numero_passeggeri }} × € {{ volo.prezzo_base }})</small>
+          </div>
+        </div>
+
+        <div *ngIf="posti_selezionati.length === 0" class="alert alert-info">
+          Seleziona {{ numero_passeggeri }} posti per procedere
+        </div>
+      </div>
+
+      <!-- BOTTONE PRENOTA -->
+      <button
+        (click)="procedintePrenotazione()"
+        [disabled]="posti_selezionati.length !== numero_passeggeri || prenotazione_in_corso"
+        class="btn btn-prenota"
+      >
+        <span *ngIf="!prenotazione_in_corso">✈️ Procedi alla Prenotazione</span>
+        <span *ngIf="prenotazione_in_corso">⏳ Elaborazione...</span>
+      </button>
+    </div>
+  </div>
+</div>
